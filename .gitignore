@@ -1,0 +1,10 @@
+.yardoc
+bin/*
+.bundle
+.DS_Store
+*~
+doc
+pkg
+coverage
+_site
+tmp

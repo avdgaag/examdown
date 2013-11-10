@@ -1,0 +1,9 @@
+--no-private
+--title "Examdown, evaluatie Markdown code blocks"
+--readme README.md
+--markup markdown
+--markup-provider kramdown
+--output-dir doc
+-
+HISTORY.md
+LICENSE

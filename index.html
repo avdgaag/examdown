@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Examdown : Plugin for Kramdown to include inline output with code samples" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Examdown</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/avdgaag/examdown">View on GitHub</a>
+
+          <h1 id="project_title">Examdown</h1>
+          <h2 id="project_tagline">Plugin for Kramdown to include inline output with code samples</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/avdgaag/examdown/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/avdgaag/examdown/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="examdown-evaluate-code-samples-in-markdown-documents-with-kramdown-" class="anchor" href="#examdown-evaluate-code-samples-in-markdown-documents-with-kramdown-"><span class="octicon octicon-link"></span></a>Examdown, evaluate code samples in Markdown documents with Kramdown <a href="http://travis-ci.org/avdgaag/examdown"><img src="https://secure.travis-ci.org/avdgaag/examdown.png?branch=master" alt="Build Status"></a>
+</h1>
+
+<h2>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
+
+<p>Examdown lets you evaluatie inline code examples in your Markdown documents.
+Include some special YAML front matter in your examples and Examdown will make
+sure its output is included in the code block output.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Examdown is distributed as a Ruby gem, which should be installed on most Macs
+and Linux systems. Once you have ensured you have a working installation of
+Ruby and Ruby gems, install the gem as follows from the command line:</p>
+
+<pre><code>% gem install examdown
+</code></pre>
+
+<p>Now you can use the <code>examdown</code> input type with the Kramdown Markdown
+library from your Ruby scripts:</p>
+
+<pre><code>require 'kramdown'
+require 'examdown'
+puts Kramdown::Document.new(ARGV[0], input: 'examdown').to_html
+</code></pre>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Examdown takes code blocks in Markdown documents and injects the code's
+output back into the original script. This allows you to include examples of
+shell scripts in your document and include the dynamically generated output
+of those scripts.</p>
+
+<h3>
+<a name="defining-runnable-code-blocks" class="anchor" href="#defining-runnable-code-blocks"><span class="octicon octicon-link"></span></a>Defining runnable code blocks</h3>
+
+<p>Define a regular code block in your Markdown file. Then add some special properties
+using YAML front matter:</p>
+
+<pre><code>Here is some code:
+
+    ---
+    language: sh
+    ---
+    % echo "foo"
+
+Pretty neat, eh?
+</code></pre>
+
+<p>This example gets converted to (roughly) the following output:</p>
+
+<pre><code>&lt;p&gt;Here is some code:&lt;/p&gt;
+
+&lt;pre class="language-sh"&gt;&lt;code&gt;% echo "foo"
+foo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Pretty neat, eh?&lt;/p&gt;
+</code></pre>
+
+<h3>
+<a name="yaml-front-matter-options" class="anchor" href="#yaml-front-matter-options"><span class="octicon octicon-link"></span></a>YAML front matter options</h3>
+
+<p>The following keys are read from the YAML front matter and used:</p>
+
+<ul>
+<li>
+<code>language</code> defines the language of the code sample and thus how
+it should be run. Currently, only <code>sh</code> is accepted as value.
+This value is also added as class name for the wrapper element.</li>
+<li>
+<code>before</code> contains an array of lines of code that should be run
+before the example but not included in the final output.</li>
+</ul><h3>
+<a name="supported-languages" class="anchor" href="#supported-languages"><span class="octicon octicon-link"></span></a>Supported languages</h3>
+
+<p>See <code>Example</code> for a list of supported code runners.</p>
+
+<h3>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
+
+<h4>
+<a name="specify-custom-kramdown-parser" class="anchor" href="#specify-custom-kramdown-parser"><span class="octicon octicon-link"></span></a>Specify custom Kramdown parser</h4>
+
+<pre><code>Kramdown::Document.new(content, input: 'examdown').to_html
+</code></pre>
+
+<h4>
+<a name="have-code-run-to-include-its-output" class="anchor" href="#have-code-run-to-include-its-output"><span class="octicon octicon-link"></span></a>Have code run to include its output</h4>
+
+<pre><code>---
+language: sh
+---
+% echo foo
+</code></pre>
+
+<h4>
+<a name="using-before-steps" class="anchor" href="#using-before-steps"><span class="octicon octicon-link"></span></a>Using before steps</h4>
+
+<pre><code>---
+language: sh
+before:
+  - cp /path/to/my-file
+---
+% cat my-file
+</code></pre>
+
+<h2>
+<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p>See the inline <a href="http://rubydoc.info/github/avdgaag/examdown/master/frames">API docs</a> for more information.</p>
+
+<h2>
+<a name="other" class="anchor" href="#other"><span class="octicon octicon-link"></span></a>Other</h2>
+
+<h3>
+<a name="note-on-patchespull-requests" class="anchor" href="#note-on-patchespull-requests"><span class="octicon octicon-link"></span></a>Note on Patches/Pull Requests</h3>
+
+<ol>
+<li>Fork the project.</li>
+<li>Make your feature addition or bug fix.</li>
+<li>Add tests for it. This is important so I don't break it in a future version
+unintentionally.</li>
+<li>Commit, do not mess with rakefile, version, or history. (if you want to have
+your own version, that is fine but bump version in a commit by itself I can
+ignore when I pull)</li>
+<li>Send me a pull request. Bonus points for topic branches.</li>
+</ol><h3>
+<a name="issues" class="anchor" href="#issues"><span class="octicon octicon-link"></span></a>Issues</h3>
+
+<p>Please report any issues, defects or suggestions in the <a href="https://github.com/avdgaag/examdown/issues">Github issue
+tracker</a>.</p>
+
+<h3>
+<a name="what-has-changed" class="anchor" href="#what-has-changed"><span class="octicon octicon-link"></span></a>What has changed?</h3>
+
+<p>See the <a href="https://github.com/avdgaag/examdown/blob/master/HISTORY.md">HISTORY</a> file for a detailed changelog.</p>
+
+<h3>
+<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h3>
+
+<p>Created by: Arjan van der Gaag<br>
+URL: <a href="http://arjanvandergaag.nl">http://arjanvandergaag.nl</a><br>
+Project homepage: <a href="http://avdgaag.github.com/examdown">http://avdgaag.github.com/examdown</a><br>
+Date: november 2013<br>
+License: <a href="https://github.com/avdgaag/examdown/LICENSE">MIT-license</a> (same as Ruby)</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Examdown maintained by <a href="https://github.com/avdgaag">avdgaag</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-20357800-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>

@@ -54,7 +54,7 @@ module Examdown
     end
 
     def run(cmd)
-      `#{cmd}`.chomp
+      `#{cmd} 2>&1`.chomp
     end
   end
 end

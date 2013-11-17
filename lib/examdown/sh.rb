@@ -36,7 +36,9 @@ module Examdown
           run step
         end
         raw_value.gsub(EXECUTABLE_LINE) do |match|
-          match + "\n" + run($1)
+          output = run($1)
+          output = "\n#{output}" if output =~ /\S/
+          match + output
         end
       end
     end

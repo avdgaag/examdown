@@ -7,9 +7,17 @@ module Kramdown
     class Examdown < Kramdown
       include ::Examdown
 
+      def initialize(*args)
+        super
+        @examdown_cache = Cache.new
+      end
+
       def parse_codeblock
         super.tap do
-          @tree.children << Example.new(@tree.children.pop).to_element
+          element = @examdown_cache.fetch(@tree.children.pop) do |el|
+            Example.new(el).to_element
+          end
+          @tree.children << element
         end
       end
     end

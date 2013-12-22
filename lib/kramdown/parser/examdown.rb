@@ -14,9 +14,16 @@ module Kramdown
 
       def parse_codeblock
         super.tap do
-          element = @examdown_cache.fetch(@tree.children.pop) do |el|
-            Example.new(el).to_element
-          end
+          last_example = @tree.children.pop
+          new_example = Example.new(last_example)
+          element =
+            if new_example.applicable?
+              @examdown_cache.fetch(last_example) do |el|
+                Example.new(el).to_element
+              end
+            else
+              last_example
+            end
           @tree.children << element
         end
       end

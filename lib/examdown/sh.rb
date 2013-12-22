@@ -51,7 +51,8 @@ module Examdown
         Dir.chdir(path)
         ret = yield
         Dir.chdir(old_path)
-        ret.gsub "/private#{path}", '/example'
+        # ret.gsub "/private#{path}", '/example'
+        'foobar'
       end
     end
 
